@@ -6,6 +6,7 @@ services:
     volumes: &api-volumes
       - ~/.ssh:/root/.ssh
       - ~/.bash_history:/root/.bash_history
+      - .:/app
     ports:
       - 8000:8000
     depends_on:
@@ -18,7 +19,10 @@ services:
       DATABASE_PASSWORD: postgres
       DATABASE_HOST: db
       DATABASE_PORT: 5432
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      bash -c "python manage.py makemigrations
+      && python manage.py migrate
+      && python manage.py runserver 0.0.0.0:8000"
 
   db:
     image: postgres:11.4
