@@ -20,8 +20,10 @@ class Task(models.Model):
     edited_at = models.DateTimeField(auto_now=True)
     deadline = models.DateTimeField()
     priority = models.IntegerField(default=1)
-    author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='author')
-    executor = models.ForeignKey(User, on_delete=models.PROTECT, related_name='executor')
+    author = models.ForeignKey(User, on_delete=models.PROTECT, related_name="author")
+    executor = models.ForeignKey(
+        User, on_delete=models.PROTECT, related_name="executor"
+    )
     tags = models.ManyToManyField(Tag)
     state = models.CharField(max_length=255, default=States.NEW, choices=States.choices)
 
@@ -29,4 +31,4 @@ class Task(models.Model):
         return f"{str(self.state).upper()} | {self.title}"
 
     def get_tags(self):
-        return ', '.join([tag.title for tag in self.tags.all()])
+        return ", ".join([tag.title for tag in self.tags.all()])

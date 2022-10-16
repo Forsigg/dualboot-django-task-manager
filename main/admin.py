@@ -19,9 +19,17 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Task, site=task_manager_admin_site)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'executor', 'created_at', 'edited_at',
-                    'deadline', 'author', 'state', 'get_tags')
+    list_display = (
+        "title",
+        "description",
+        "executor",
+        "created_at",
+        "edited_at",
+        "deadline",
+        "author",
+        "state",
+        "get_tags",
+    )
 
 
 task_manager_admin_site.register(User, UserAdmin)
-
