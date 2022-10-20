@@ -41,3 +41,4 @@ class TaskSerializer(serializers.ModelSerializer):
             "tags",
             "state",
         )
+        
