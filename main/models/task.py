@@ -18,7 +18,7 @@ class Task(models.Model):
     description = models.TextField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
-    deadline = models.DateTimeField()
+    deadline = models.DateTimeField(null=True)
     priority = models.IntegerField(default=1)
     author = models.ForeignKey(User, on_delete=models.PROTECT, related_name="author")
     executor = models.ForeignKey(
