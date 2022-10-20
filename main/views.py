@@ -6,11 +6,11 @@ from main.serializers import UserSerializer, TaskSerializer, TagSerializer
 
 
 class UserFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(lookup_expr="icontains")
+    username = django_filters.CharFilter(lookup_expr="icontains")
 
     class Meta:
         model = User
-        fields = ("name",)
+        fields = ("username",)
 
 
 class TaskFilter(django_filters.FilterSet):
@@ -27,12 +27,13 @@ class TaskFilter(django_filters.FilterSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.order_by("id")
     serializer_class = UserSerializer
-    filterset = UserFilter
+    filterset_class = UserFilter
 
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.prefetch_related("tags").order_by("id")
     serializer_class = TaskSerializer
+    filterset_class = TaskFilter
 
 
 class TagViewSet(viewsets.ModelViewSet):
