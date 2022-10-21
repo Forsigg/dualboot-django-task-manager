@@ -28,7 +28,6 @@ class TaskSerializer(serializers.ModelSerializer):
             "priority",
             "author",
             "executor",
-            "get_tags",
             "state",
         )
 

@@ -28,17 +28,28 @@ class TaskFactory(factory.django.DjangoModelFactory):
 
     title = factory.LazyAttribute(lambda _: faker.name())
     description = factory.LazyAttribute(lambda _: faker.sentence())
-    created_at = factory.LazyAttribute(lambda _: datetime.datetime.now())
-    edited_at = factory.LazyAttribute(lambda _: datetime.datetime.now())
+    created_at = factory.LazyAttribute(
+        lambda _: faker.past_datetime().strftime("%Y-%m-%dT%XZ")
+    )
+    edited_at = factory.LazyAttribute(
+        lambda _: faker.past_datetime().strftime("%Y-%m-%dT%XZ")
+    )
+    deadline = factory.LazyAttribute(
+        lambda _: faker.past_datetime().strftime("%Y-%m-%dT%XZ")
+    )
     priority = factory.LazyAttribute(lambda _: faker.random_element(elements=(1, 2, 3)))
-    author = factory.SubFactory(UserFactory)
-    executor = factory.SubFactory(UserFactory)
-    state = factory.fuzzy.FuzzyChoice(Task.States)
-
-    @factory.post_generation
-    def tags(self, create, extracted, **kwargs):
-        if not create:
-            return
-        if extracted:
-            for tag in extracted:
-                self.tags.add(tag)
+    author = factory.LazyAttribute(lambda _: 2)
+    executor = factory.LazyAttribute(lambda _: 2)
+    state = factory.LazyAttribute(
+        lambda _: faker.word(
+            ext_word_list=[
+                "new_task",
+                "in_development",
+                "in_qa",
+                "in_code_review",
+                "ready_for_release",
+                "released",
+                "archived",
+            ]
+        )
+    )
