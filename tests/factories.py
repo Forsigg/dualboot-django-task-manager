@@ -38,8 +38,8 @@ class TaskFactory(factory.django.DjangoModelFactory):
         lambda _: faker.past_datetime().strftime("%Y-%m-%dT%XZ")
     )
     priority = factory.LazyAttribute(lambda _: faker.random_element(elements=(1, 2, 3)))
-    author = factory.LazyAttribute(lambda _: 2)
-    executor = factory.LazyAttribute(lambda _: 2)
+    author = factory.LazyAttribute(lambda _: 3)
+    executor = factory.LazyAttribute(lambda _: 3)
     state = factory.LazyAttribute(
         lambda _: faker.word(
             ext_word_list=[
