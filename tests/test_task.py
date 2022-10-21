@@ -37,11 +37,7 @@ class TestTaskViewSet(TestViewSetBase):
         task = self.create(self.task_attributes)
         expected_response = self.expected_details(task, task)
         task_updated = self.update(self.task_attributes, expected_response["id"])
-        updated_expected_response = self.expected_details(
-            task_updated, task
-        )
-        print("\nTASK UPD ", task_updated)
-        print("\nRESP UPD ", updated_expected_response)
+        updated_expected_response = self.expected_details(task_updated, task)
         assert task_updated == updated_expected_response
 
     def test_delete(self):
