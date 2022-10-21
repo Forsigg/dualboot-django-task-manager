@@ -1,5 +1,4 @@
 import factory
-from django.forms import model_to_dict
 
 from main.models import User
 from .base import TestViewSetBase
