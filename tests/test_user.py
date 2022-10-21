@@ -29,7 +29,7 @@ class TestUserViewSet(TestViewSetBase):
         api_user_exp_resp = self.expected_details(
             default_api_user, attributes=default_api_user
         )
-        list_users = self.list()
+        list_users = self.list_()
         assert list_users == [api_user_exp_resp, user1_exp_resp, user2_exp_resp]
 
     def test_retrieve(self):

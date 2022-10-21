@@ -24,7 +24,7 @@ class TestTagViewSet(TestViewSetBase):
         tag1_exp_resp = self.expected_details(tag1, attributes=tag1)
         tag2 = self.create(tags[1])
         tag2_exp_resp = self.expected_details(tag2, attributes=tag2)
-        list_tasks = self.list()
+        list_tasks = self.list_()
         assert list_tasks == [tag1_exp_resp, tag2_exp_resp]
 
     def test_retrieve(self):

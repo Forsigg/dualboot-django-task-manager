@@ -24,7 +24,7 @@ class TestTaskViewSet(TestViewSetBase):
         task1_exp_resp = self.expected_details(task1, attributes=task1)
         task2 = self.create(tasks[1])
         task2_exp_resp = self.expected_details(task2, attributes=task2)
-        list_tasks = self.list()
+        list_tasks = self.list_()
         assert list_tasks == [task1_exp_resp, task2_exp_resp]
 
     def test_retrieve(self):
