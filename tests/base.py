@@ -43,7 +43,7 @@ class TestViewSetBase(APITestCase):
         assert response.status_code == HTTPStatus.CREATED, response.content
         return response.data
 
-    def list(self, args: list[Union[int, str]] = None) -> dict:
+    def list_(self, args: list[Union[int, str]] = None) -> dict:
         self.client.force_login(self.user)
         response = self.client.get(self.list_url(args))
         assert response.status_code == HTTPStatus.OK, response.content
@@ -73,3 +73,9 @@ class TestViewSetBase(APITestCase):
         response = self.client.delete(self.detail_url(args))
         assert response.status_code == HTTPStatus.NO_CONTENT
         return response
+
+    def unauthorized_get(self, args: list[Union[str, int]]) -> dict:
+        self.client.logout()
+        response = self.client.get(self.list_url(args))
+        assert response.status_code == HTTPStatus.FORBIDDEN
+        return response.data
