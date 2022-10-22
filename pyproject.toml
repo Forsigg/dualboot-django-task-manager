@@ -8,6 +8,11 @@ authors = ["dbp"]
 python = "^3.9"
 Django = "^4.1.2"
 psycopg2-binary = "^2.9.4"
+djangorestframework = "^3.14.0"
+django-filter = "^22.1"
+Markdown = "^3.4.1"
+drf-yasg = "^1.21.4"
+djangorestframework-simplejwt = "^5.2.2"
 
 [tool.poetry.dev-dependencies]
 
