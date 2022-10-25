@@ -2,7 +2,7 @@ import factory
 
 from main.models import Task
 from tests.base import TestViewSetBase
-from tests.factories import TaskFactory
+from tests.factories import TaskFactory, TagFactory
 
 
 class TestTaskViewSet(TestViewSetBase):
@@ -43,8 +43,8 @@ class TestTaskViewSet(TestViewSetBase):
 
     def test_delete(self):
         task = self.create(self.task_attributes)
-        tasks_count = Task.objects.count()
+        tasks_count = len(self.list_())
         assert 1 == tasks_count
         self.delete(task["id"])
-        tasks_count = Task.objects.count()
+        tasks_count = len(self.list_())
         assert 0 == tasks_count

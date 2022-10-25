@@ -21,14 +21,19 @@ class TestUserViewSet(TestViewSetBase):
     def test_list(self):
         users = [factory.build(dict, FACTORY_CLASS=UserFactory) for _ in range(2)]
         default_api_user = self.retrieve(self.user.id)
+        default_user_id = default_api_user['id']
         users.append(default_api_user)
         expected_responses = []
         for user_dict in users:
-            user = self.create(user_dict)
+            if user_dict.get('id', None) == default_user_id:
+                user = user_dict
+            else:
+                user = self.create(user_dict)
             user_expected_response = self.expected_details(user, attributes=user)
             expected_responses.append(user_expected_response)
         list_users = self.list_()
-        assert list_users == expected_responses
+        assert list_users == sorted(expected_responses, key=lambda response: response[
+            'id'])
 
     def test_retrieve(self):
         user = self.create(self.user_attributes)
@@ -47,10 +52,10 @@ class TestUserViewSet(TestViewSetBase):
 
     def test_delete(self):
         user = self.create(self.user_attributes)
-        users_count = User.objects.count()
+        users_count = len(self.list_())
         assert 2 == users_count
         self.delete(user["id"])
-        users_count = User.objects.count()
+        users_count = len(self.list_())
         assert 1 == users_count
 
     def test_filter(self):

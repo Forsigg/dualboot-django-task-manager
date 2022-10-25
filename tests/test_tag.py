@@ -43,8 +43,8 @@ class TestTagViewSet(TestViewSetBase):
 
     def test_delete(self):
         tag = self.create(self.tag_attributes)
-        tags_count = Tag.objects.count()
+        tags_count = len(self.list_())
         assert 1 == tags_count
         self.delete(tag["id"])
-        tags_count = Tag.objects.count()
+        tags_count = len(self.list_())
         assert 0 == tags_count

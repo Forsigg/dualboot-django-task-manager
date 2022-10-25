@@ -57,8 +57,7 @@ class TestViewSetBase(APITestCase):
 
     def list_filter(self, args: Union[int, str], q: str) -> dict:
         self.client.force_login(self.user)
-        url = self.list_url()[:-1] + f"?{q}={args}"
-        response = self.client.get(url, follow=True)
+        response = self.client.get(self.list_url(), follow=True, data={q: args})
         assert response.status_code == HTTPStatus.OK, response.content
         return response.data
 
