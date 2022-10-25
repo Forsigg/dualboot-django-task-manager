@@ -20,12 +20,13 @@ class TestTaskViewSet(TestViewSetBase):
 
     def test_list(self):
         tasks = [factory.build(dict, FACTORY_CLASS=TaskFactory) for _ in range(2)]
-        task1 = self.create(tasks[0])
-        task1_exp_resp = self.expected_details(task1, attributes=task1)
-        task2 = self.create(tasks[1])
-        task2_exp_resp = self.expected_details(task2, attributes=task2)
+        expected_responses = []
+        for task_dict in tasks:
+            task = self.create(task_dict)
+            task_expected_response = self.expected_details(task, attributes=task)
+            expected_responses.append(task_expected_response)
         list_tasks = self.list_()
-        assert list_tasks == [task1_exp_resp, task2_exp_resp]
+        assert list_tasks == expected_responses
 
     def test_retrieve(self):
         task = self.create(self.task_attributes)

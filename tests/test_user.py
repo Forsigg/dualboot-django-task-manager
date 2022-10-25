@@ -20,17 +20,15 @@ class TestUserViewSet(TestViewSetBase):
 
     def test_list(self):
         users = [factory.build(dict, FACTORY_CLASS=UserFactory) for _ in range(2)]
-
-        user1 = self.create(users[0])
-        user1_exp_resp = self.expected_details(user1, attributes=user1)
-        user2 = self.create(users[1])
-        user2_exp_resp = self.expected_details(user2, attributes=user2)
         default_api_user = self.retrieve(self.user.id)
-        api_user_exp_resp = self.expected_details(
-            default_api_user, attributes=default_api_user
-        )
+        users.append(default_api_user)
+        expected_responses = []
+        for user_dict in users:
+            user = self.create(user_dict)
+            user_expected_response = self.expected_details(user, attributes=user)
+            expected_responses.append(user_expected_response)
         list_users = self.list_()
-        assert list_users == [api_user_exp_resp, user1_exp_resp, user2_exp_resp]
+        assert list_users == expected_responses
 
     def test_retrieve(self):
         user = self.create(self.user_attributes)
