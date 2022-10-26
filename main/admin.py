@@ -28,7 +28,6 @@ class TaskAdmin(admin.ModelAdmin):
         "deadline",
         "author",
         "state",
-        "get_tags",
     )
 
 

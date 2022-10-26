@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from .tag import Tag
 from .user import User
@@ -16,9 +17,9 @@ class Task(models.Model):
 
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=500)
-    created_at = models.DateTimeField(auto_now_add=True)
-    edited_at = models.DateTimeField(auto_now=True)
-    deadline = models.DateTimeField()
+    created_at = models.DateTimeField(default=timezone.now)
+    edited_at = models.DateTimeField(default=timezone.now)
+    deadline = models.DateTimeField(null=True)
     priority = models.IntegerField(default=1)
     author = models.ForeignKey(User, on_delete=models.PROTECT, related_name="author")
     executor = models.ForeignKey(
@@ -29,6 +30,3 @@ class Task(models.Model):
 
     def __str__(self):
         return f"{str(self.state).upper()} | {self.title}"
-
-    def get_tags(self):
-        return ", ".join([tag.title for tag in self.tags.all()])
