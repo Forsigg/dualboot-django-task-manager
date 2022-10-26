@@ -4,6 +4,7 @@ from typing import Union
 from django.urls import reverse
 
 from rest_framework.test import APITestCase, APIClient
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from main.models import User
 from tests.factories import UserFactory
@@ -19,6 +20,13 @@ class TestViewSetBase(APITestCase):
         super().setUpTestData()
         cls.user = cls.create_api_user()
         cls.client = APIClient()
+        token = cls.get_token()
+        cls.token = {"HTTP_AUTHORIZATION": f"Bearer {token.access_token}"}
+
+    @classmethod
+    def get_token(cls):
+        token = RefreshToken.for_user(cls.user)
+        return token
 
     @staticmethod
     def create_api_user():
@@ -39,38 +47,38 @@ class TestViewSetBase(APITestCase):
 
     def create(self, data: dict, args: list[Union[int, str]] = None) -> dict:
         self.client.force_login(self.user)
-        response = self.client.post(self.list_url(args), data=data)
+        response = self.client.post(self.list_url(args), data=data, **self.token)
         assert response.status_code == HTTPStatus.CREATED, response.content
         return response.data
 
     def list_(self, args: list[Union[int, str]] = None) -> dict:
         self.client.force_login(self.user)
-        response = self.client.get(self.list_url(args))
+        response = self.client.get(self.list_url(args), **self.token)
         assert response.status_code == HTTPStatus.OK, response.content
         return response.data
 
     def retrieve(self, args: Union[int, str]) -> dict:
         self.client.force_login(self.user)
-        response = self.client.get(self.detail_url(args))
+        response = self.client.get(self.detail_url(args), **self.token)
         assert response.status_code == HTTPStatus.OK, response.content
         return response.data
 
-    def list_filter(self, args: Union[int, str], q: str) -> dict:
+    def list_filter(self, query_data: dict) -> dict:
         self.client.force_login(self.user)
-        url = self.list_url()[:-1] + f"?{q}={args}"
-        response = self.client.get(url, follow=True)
+        response = self.client.get(self.list_url(), follow=True, data=query_data,
+                                   **self.token)
         assert response.status_code == HTTPStatus.OK, response.content
         return response.data
 
     def update(self, data: dict, args: Union[int, str]) -> dict:
         self.client.force_login(self.user)
-        response = self.client.put(self.detail_url(args), data=data)
+        response = self.client.put(self.detail_url(args), data=data, **self.token)
         assert response.status_code == HTTPStatus.OK, response.content
         return response.data
 
     def delete(self, args: Union[int, str]) -> dict:
         self.client.force_login(self.user)
-        response = self.client.delete(self.detail_url(args))
+        response = self.client.delete(self.detail_url(args), **self.token)
         assert response.status_code == HTTPStatus.NO_CONTENT
         return response
 

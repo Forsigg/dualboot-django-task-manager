@@ -59,5 +59,5 @@ class TestUserViewSet(TestViewSetBase):
         user = self.create(self.user_attributes)
         expected_response = self.expected_details(user, self.user_attributes)
         username_trunc = expected_response["username"][:2]
-        user_filter = self.list_filter(args=username_trunc, q="username")
+        user_filter = self.list_filter(query_data={"username": username_trunc})
         assert user_filter == [expected_response]
